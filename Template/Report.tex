@@ -1,0 +1,167 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper]{article} % Default font size is 12pt, it can be changed here
+\usepackage{geometry} % Required to change the page size to A4
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{amsmath, amssymb}
+\usepackage{titlesec}
+\usepackage{graphicx} % Required for including pictures
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage[hidelinks]{hyperref}
+\usepackage[sorting=none, style=numeric, maxnames=5, backend=biber]{biblatex}
+\addbibresource{BESTAND}
+\usepackage{enumitem} %allows easy continueing lists.
+\usepackage{siunitx} %Here you can write your things in SIunits
+\usepackage{listings} %Listings package is for scripts
+\usepackage{cprotect}
+\usepackage[dutch, english]{babel}
+\usepackage{float}
+
+\setlength{\parskip}{0.25cm}
+\setlength{\parindent}{0cm}
+
+% MATHEMATICS 
+%\renewcommand{\vec}[1] {\ensuremath{ \overrightarrow{ #1 } }}
+% \bra \ket \braket and \proj
+\newcommand{\bra}[1]{\ensuremath{\langle #1 \vert}}
+\newcommand{\ket}[1]{\ensuremath{\vert #1 \rangle}}
+\newcommand{\braket}[2]{\ensuremath{\langle #1 \vert #2 \rangle}}
+\newcommand{\ketbra}[2]{\ensuremath{\vert #1 \rangle  \langle #2 \vert}}
+\newcommand{\proj}[1]{\ensuremath{\vert #1 \rangle \langle #1 \vert}}
+\newcommand{\expect}[1]{\ensuremath{\langle #1 \rangle}}
+\newcommand{\op}[1]{\mathrm{#1}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\diff}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dirac}[1]{\displaystyle{\not}#1}
+\newcommand{\up}{\uparrow}
+\newcommand{\down}{\downarrow}
+
+%%%% CODE ENVIRONMENT
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ 
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=3,	                   	 % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\DeclareCiteCommand{\cite}[\mkbibsuperscript]
+  {\iffieldundef{prenote}
+     {}
+     {\BibliographyWarning{Ignoring prenote argument}}%
+   \iffieldundef{postnote}
+     {}
+     {\BibliographyWarning{Ignoring postnote argument}}%
+   \bibopenbracket}%
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\supercitedelim}
+  {\bibclosebracket}
+ 
+\DeclareMathOperator{\sinc}{sinc}
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+\begin{figure}[H] \center{\includegraphics[width=0.2\linewidth]{/Users/douweremmelts/Documents/Template/logo.png}} \end{figure}
+\textsc{\LARGE Universiteit Leiden}\\[1.5cm] % Name of your university/college
+\textsc{\Large Physics Experiments}\\[0.5cm] % Major heading such as course name
+%\textsc{\large Eindproject}\\[0.5cm] % Minor heading such as course title
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Titel}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+
+\begin{minipage}{0.45\textwidth}
+\begin{flushleft} \large
+\emph{Authors:}\\
+Douwe \textsc{Remmelts} \small{(\texttt{s2586592})}\\
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Lecturers:} \\
+Dr. ir. Paul \textsc{Logman}\\ % Supervisor's Name
+Evert \textsc{Stolte}\\ % Supervisor's Name
+\hspace{1cm} \\
+\end{flushright}
+\end{minipage}\\[4cm]
+
+{\large \today\\Leiden}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	Abstract
+%----------------------------------------------------------------------------------------
+\selectlanguage{english}
+\begin{abstract}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin convallis, mauris pharetra tempus congue, orci nisl finibus lacus, quis pharetra metus nulla sit amet sem. Mauris facilisis velit scelerisque neque ultrices finibus. Phasellus dictum elementum ex, quis porta tortor rutrum vel. Nulla dignissim justo vel scelerisque scelerisque. Integer quis neque enim. Nullam auctor enim eget convallis blandit. Sed iaculis nulla sapien, vel finibus velit sagittis a. Proin tincidunt nec metus vel laoreet. Aliquam porttitor finibus mauris vel volutpat. Phasellus vulputate eros ipsum, eget vehicula sem feugiat vitae. In molestie tellus ac arcu rutrum accumsan.
+\end{abstract}
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+\setcounter{tocdepth}{2}
+\tableofcontents % Include a table of contents
+
+\newpage % Begins the essay on a new page instead of on the same page as the table of contents
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	THEORY
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+\newpage
+\printbibliography
+
+%----------------------------------------------------------------------------------------
+%	APPENDIX: THE CODE
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\end{document}
+
+

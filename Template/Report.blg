@@ -1,0 +1,9 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[1] Config.pm:307> INFO - Logfile is 'Report.blg'
+[85] biber-darwin:315> INFO - === wo jun  9, 2021, 13:33:30
+[124] Biber.pm:371> INFO - Reading 'Report.bcf'
+[323] Biber.pm:889> INFO - Found 0 citekeys in bib section 0
+[336] Utils.pm:193> WARN - The file 'Report.bcf' does not contain any citations!
+[358] bbl.pm:636> INFO - Writing 'Report.bbl' with encoding 'UTF-8'
+[359] bbl.pm:739> INFO - Output to Report.bbl
+[360] Biber.pm:110> INFO - WARNINGS: 1
