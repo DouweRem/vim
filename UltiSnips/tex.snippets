@@ -408,14 +408,14 @@ endsnippet
 
 priority 100
 context "math()" 
-snippet `pder(.*)` "Partial derivative" rw
+snippet `pder([^\n$]+)` "Partial derivative" rw
 \frac{\partial `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`} $0
 endsnippet
 
 priority 10
 context "math()" 
-snippet `der(.*)` "Derivative" rw
-\frac{\text{d} `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\\text{d}')`} $0
+snippet `der([^\n$]+)` "Derivative" rw
+\frac{\text{d} `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(2), '\\text{d}')`} $0
 endsnippet
 
 context "math()" 
