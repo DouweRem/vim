@@ -7,13 +7,15 @@ texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')
 
 ignore = texIgnoreMathZoneIds[0]
 
+#def math():
+#	synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
+#	try:
+#		first = next(i for i in reversed(synstackids) if i in texIgnoreMathZoneIds or i in texMathZoneIds)
+#		return first != ignore
+#	except StopIteration:
+#		return False
 def math():
-	synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
-	try:
-		first = next(i for i in reversed(synstackids) if i in texIgnoreMathZoneIds or i in texMathZoneIds)
-		return first != ignore
-	except StopIteration:
-		return False
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 
 #def create_int_placeholders(snip):
 #    start = snip.snippet_start[1]
@@ -153,7 +155,7 @@ def find_order(string):
     counts = index_infinitesimals(string)
     all_values = [*counts.values()]
     if len(all_values) == 1:
-        if all_values[0] == '1':
+        if all_values[0] == 1:
             return ''
         else:
             return '^{' + str(all_values[0]) + '}'
@@ -419,7 +421,7 @@ endsnippet
 priority 10
 context "math()" 
 snippet `der([^\n$]+)` "Derivative" rw
-\frac{\text{d} `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(2), '\\text{d}')`} $0
+\frac{\text{d} `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\\text{d}')`} $0
 endsnippet
 
 context "math()" 
@@ -608,4 +610,17 @@ snip.rv = orient`}
 snip.rv = create_array(match.group(1), match.group(2), "&", "\t", "\\\\\\\\\n")
 	`$0
 endsnippet
+
+snippet '(?<!\\)(qty|SI)' "siunitx" rw
+\\`!p snip.rv = match.group(1)`{$1}{$2}$0
+endsnippet
+
+snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|per|squared)' "units in siunitx" rwA
+`!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\" + match.group(4)`$0
+endsnippet
+
+snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)meter' "meter in siunitx" rwA
+`!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\metre"`$0
+endsnippet
+
 
