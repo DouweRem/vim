@@ -122,13 +122,13 @@ def create_math_matrix(cols, rows, sep, start, end, kind):
 	res = ""
 	placeholder = 1
 	for _ in range(0, int(rows)):
-		res += start + f"${placeholder} "
+		res += start + f"\t${placeholder} "
 		placeholder += 1
 		for _ in range(0, int(cols) - 1):
 			res += sep + f" ${placeholder} "
 			placeholder += 1
 		res += end
-	res += "\t\end{"+kind+"}"
+	res += start+"\end{"+kind+"}"
 	return res
 
 def create_array(cols, rows, sep, start, end):
@@ -212,7 +212,7 @@ def create_infinitesimals(string, prefactor):
         if order == 1:
             denom += prefactor + ' ' + inf + '\,'
         else:
-            denom += prefactor + '^{' + str(order) + '} ' + inf + '\,'
+            denom += prefactor + ' ' + inf + '^{' + str(order) + '}' + '\,'
     return denom[:-2]
 
 endglobal
@@ -415,13 +415,19 @@ endsnippet
 priority 100
 context "math()" 
 snippet `pder([^\n$]+)` "Partial derivative" rw
-\frac{\partial `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`} $0
+\frac{\partial`!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`}$0
+endsnippet
+
+priority 100
+context "math()" 
+snippet `cder([^\n$]+)` "Covariant derivative" rw
+\frac{\text{D}`!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`}$0
 endsnippet
 
 priority 10
 context "math()" 
 snippet `der([^\n$]+)` "Derivative" rw
-\frac{\text{d} `!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\\text{d}')`} $0
+\frac{\text{d}`!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\\text{d}')`}$0
 endsnippet
 
 context "math()" 
@@ -592,10 +598,10 @@ snip.rv = create_matrix(match.group(1), match.group(2), "&", "\t", "\\\\\\\\\n")
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
-snippet '(?<!\\)(pmat|vmat)_(\d+),(\d+)' "P matrix" r
-\begin{`!p snip.rv = match.group(1)`rix}
+snippet '([ \t]*)(?<!\\)(\\\[|)(?<!\\)(pmat|vmat)_(\d+),(\d+)' "P matrix" r
+`!p snip.rv = match.group(1) + match.group(2)`\begin{`!p snip.rv = match.group(3)`rix}
 `!p
-snip.rv = create_math_matrix(match.group(2), match.group(3), "&", "\t", "\\\\\\\\\n", match.group(1)+'rix')
+snip.rv = create_math_matrix(match.group(4), match.group(5), "&", match.group(1), "\\\\\\\\\n", match.group(3)+'rix')
 	`$0
 endsnippet
 
