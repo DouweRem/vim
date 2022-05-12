@@ -225,7 +225,7 @@ snippet template "basis template" b
 \usepackage{textcomp}
 \usepackage[english]{babel}
 \usepackage{amsmath, amssymb}
-\usepackage{physics}
+\usepackage{siunitx}
 \usepackage{gensymb}
 \usepackage{graphicx}
 
@@ -249,6 +249,13 @@ snippet template "basis template" b
 \maketitle
 $0
 \end{document}
+endsnippet
+
+snippet asttemp "Astronomy units" b
+\DeclareSIUnit \parsec {pc}
+\DeclareSIUnit \Msun {M\ensuremath{_\odot}}
+\DeclareSIUnit \Rsun {R\ensuremath{_\odot}
+\DeclareSIUnit \Lsun {L\ensuremath{_\odot}
 endsnippet
 
 snippet vctemp "Vector template" b
@@ -515,20 +522,20 @@ snippet inf "Oneindig" Ai
 \infty
 endsnippet
 
-context "math()"
-snippet Rsun "Zonnestraal" Ai
-R_\odot
-endsnippet
+# context "math()"
+# snippet Rsun "Zonnestraal" Ai
+# R_\odot
+# endsnippet
 
-context "math()"
-snippet Msun "Zonnen massa" Ai
-M_\odot
-endsnippet
+# context "math()"
+# snippet Msun "Zonnen massa" Ai
+# M_\odot
+# endsnippet
 
-context "math()"
-snippet Lsun "Zonnen luminosity" Ai
-L_\odot
-endsnippet
+# context "math()"
+# snippet Lsun "Zonnen luminosity" Ai
+# L_\odot
+# endsnippet
 # vim:ft=snippets
 
 context "math()"
@@ -621,7 +628,7 @@ snippet '(?<!\\)(qty|SI)' "siunitx" rw
 \\`!p snip.rv = match.group(1)`{$1}{$2}$0
 endsnippet
 
-snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|per|squared)' "units in siunitx" rwA
+snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|parsec|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
 `!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\" + match.group(4)`$0
 endsnippet
 
