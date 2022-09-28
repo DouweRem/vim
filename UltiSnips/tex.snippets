@@ -239,6 +239,7 @@ snippet template "basis template" b
 \addtolength{\textheight}{5cm}
 \setlength{\parskip}{0pt}
 \setlength{\parindent}{0in}
+\sisetup{exponent-product = \cdot}
 
 
 \title{$1}
@@ -324,13 +325,19 @@ else:
 endsnippet
 
 context "math()"
-snippet '([A-Za-z])(\d)' "auto subscript" wrA
-`!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
+snippet '(\b|^|\\)(?!sim|geq|leq)([a-z]+)(\d)(\b|$|\\)' "auto subscript" wrA
+`!p snip.rv = match.group(1) + match.group(2) + "_" + match.group(3)`
 endsnippet
 
 context "math()"
 snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
 `!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+priority 10
+context "math()"
+snippet '(\d)e(\d)' "non-subscript siunitx" wrA
+`!p snip.rv = match.group(1) + "e" + match.group(2)`
 endsnippet
 
 priority 10
@@ -422,19 +429,19 @@ endsnippet
 priority 100
 context "math()" 
 snippet `pder([^\n$]+)` "Partial derivative" rw
-\frac{\partial`!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`}$0
+\frac{\partial`!p snip.rv = find_order(match.group(1))` $1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`}$0
 endsnippet
 
 priority 100
 context "math()" 
 snippet `cder([^\n$]+)` "Covariant derivative" rw
-\frac{\text{D}`!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`}$0
+\frac{\text{D}`!p snip.rv = find_order(match.group(1))` $1}{`!p snip.rv = create_infinitesimals(match.group(1), '\partial')`}$0
 endsnippet
 
 priority 10
 context "math()" 
 snippet `der([^\n$]+)` "Derivative" rw
-\frac{\text{d}`!p snip.rv = find_order(match.group(1))`$1}{`!p snip.rv = create_infinitesimals(match.group(1), '\\text{d}')`}$0
+\frac{\text{d}`!p snip.rv = find_order(match.group(1))` $1}{`!p snip.rv = create_infinitesimals(match.group(1), '\\text{d}')`}$0
 endsnippet
 
 context "math()" 
@@ -628,7 +635,7 @@ snippet '(?<!\\)(qty|SI)' "siunitx" rw
 \\`!p snip.rv = match.group(1)`{$1}{$2}$0
 endsnippet
 
-snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|parsec|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
+snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|parsec|erg|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
 `!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\" + match.group(4)`$0
 endsnippet
 
