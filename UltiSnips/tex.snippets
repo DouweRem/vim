@@ -17,6 +17,10 @@ ignore = texIgnoreMathZoneIds[0]
 def math():
 	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 
+
+# def siunitx():
+#	return 
+
 #def create_int_placeholders(snip):
 #    start = snip.snippet_start[1]
 #    end = snip.snippet_end[1]
@@ -325,13 +329,18 @@ else:
 endsnippet
 
 context "math()"
-snippet '(\b|^|\\)(?!sim|geq|leq)([a-z]+)(\d)(\b|$|\\)' "auto subscript" wrA
+snippet '(\b|^|\\)(?!approx|sim|geq|leq|equiv)([A-Za-z]+)(\d)' "auto subscript" wrA
 `!p snip.rv = match.group(1) + match.group(2) + "_" + match.group(3)`
 endsnippet
 
 context "math()"
-snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
+snippet '([A-Za-z])_((?:\d|[a-zA-Z])(?:,?)(?:\d|[A-Za-z]))' "auto subscript2" wrA
 `!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+context "math()"
+snippet '([A-Za-z])_([a-zA-z]+)_(\d|[A-Za-z])' "auto subscript3" wrA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2) + '_' + match.group(3)`}
 endsnippet
 
 priority 10
@@ -364,12 +373,12 @@ endsnippet
 
 priority 100
 context "math()"
-snippet evc "Eenheids Vector" Ai
+snippet '(?<!\\)evc' "Eenheids Vector" rAi
 \evc{$1}$0
 endsnippet
 
 context "math()"
-snippet tens "Tens" Ai
+snippet '(?<!\\)tens' "Tens" rAi
 \tens{$1}$0
 endsnippet
 
@@ -379,12 +388,22 @@ snippet // "Breuk" Ai
 endsnippet
 
 context "math()"
+snippet '([^$\[\(\)\s]+)\/(\S+)(\s)' "Automatische breuk" rA
+\frac{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}`!p snip.rv = match.group(3)`
+endsnippet
+
+context "math()"
+snippet '\((.+)\)/\((.+)\)' "Automatische breuk versie 2" rA 
+\frac{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}
+endsnippet
+
+context "math()"
 snippet txt "Text" iA
 \text{$1}$0
 endsnippet
 
 context "math()"
-snippet sqrt "Wortel" iA
+snippet '(?<!\\)sqrt' "Wortel" riA
 \sqrt{$1}$0
 endsnippet
 
@@ -394,7 +413,7 @@ snippet mtc "Mathcal" i
 endsnippet
 
 context "math()"
-snippet hat "Hat" i
+snippet '(?<!\\)hat' "Hat" rAi
 \hat{$1}$0
 endsnippet
 
@@ -445,12 +464,12 @@ snippet `der([^\n$]+)` "Derivative" rw
 endsnippet
 
 context "math()" 
-snippet exp "e macht" i
+snippet '(?<!\\)exp' "e macht" rAi
 e^{$1}$0
 endsnippet
 
 context "math()"
-snippet log "logaritme" Ai
+snippet '(?<!\\)log' "logaritme" rAi
 \log_{$2}\left($1\right)$0
 endsnippet
 
@@ -501,31 +520,30 @@ snippet FF "Fourier trans" Ai
 \mathfrak{F}
 endsnippet
 
-
 context "math()"
-snippet sum "Sommatie" Ai
+snippet '(?<!\\)sum' "Sommatie" rAi
 \sum_{${1:i}}^{$2} $0
 endsnippet
 
 priority 100
 context "math()"
-snippet '([^\n\\^\no^\ni]+)(?<!\\)(int|iint|oint|iiint|oiint)' "Integraal" rw
-`!p snip.rv = match.group(1) + '\\' + match.group(2)`_{$1}^{$2} $3 \\text{d}x $0
+snippet '(?<!\\|o|i)(int|iint|oint|iiint|oiint)' "Integraal" rw
+`!p snip.rv = '\\' + match.group(1)`_{$1}^{$2} $3 \\text{d}x $0
 endsnippet
 
 priority 10
 context "math()"
-snippet '([^\n\\^\no^\ni]+)(?<!\\)(int|iint|oint|iiint|oiint)([^\n$]+)' "ints" rw
-`!p snip.rv = match.group(1) + '\\' + match.group(2)`_{$1}^{$2} $3 `!p snip.rv = create_infinitesimals(match.group(3), '\\text{d}')` $0
+snippet '(?<!\\|o|i)(int|iint|oint|iiint|oiint)([^\n$]+)' "ints" rw
+`!p snip.rv = '\\' + match.group(1)`_{$1}^{$2} $3 `!p snip.rv = create_infinitesimals(match.group(2), '\\text{d}')` $0
 endsnippet
 
 context "math()"
-snippet lim "Limiet" Ai
+snippet '(?<!\\)lim' "Limiet" rAi
 \lim_{${1:x}\to ${2:0}} $0
 endsnippet
 
 context "math()"
-snippet inf "Oneindig" Ai
+snippet '(?<!\\)inf' "Oneindig" rAi
 \infty
 endsnippet
 
@@ -546,7 +564,7 @@ endsnippet
 # vim:ft=snippets
 
 context "math()"
-snippet pmat "P matrix" i
+snippet '(?<!\\)pmat' "P matrix" ri
 \begin{pmatrix}
 	$1
 \end{pmatrix}$0
@@ -580,19 +598,19 @@ endsnippet
 
 priority 10
 context "math"
-snippet bra "bra" i
+snippet '(?<!\\)bra' "bra" ri
 \bra*{$1}$0
 endsnippet
 
 priority 10
 context "math"
-snippet ket "ket" i
+snippet '(?<!\\)ket' "ket" ri
 \ket*{$1}$0
 endsnippet
 
 priority 100
 context "math()"
-snippet braket "braket" i
+snippet '(?<!\\)braket' "braket" rAi
 \braket*{$1}{$2}$0
 endsnippet
 
@@ -635,11 +653,11 @@ snippet '(?<!\\)(qty|SI)' "siunitx" rw
 \\`!p snip.rv = match.group(1)`{$1}{$2}$0
 endsnippet
 
-snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|parsec|erg|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
+snippet '(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|parsec|erg|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
 `!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\" + match.group(4)`$0
 endsnippet
 
-snippet '(?<!\\)(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)meter' "meter in siunitx" rwA
+snippet '(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)meter' "meter in siunitx" rwA
 `!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\metre"`$0
 endsnippet
 
