@@ -221,7 +221,7 @@ def create_infinitesimals(string, prefactor):
 
 endglobal
 
-snippet template "basis template" b
+snippet template "Basic LaTeX template" b
 \documentclass[a4paper]{article}
 
 \usepackage[utf8]{inputenc}
@@ -317,7 +317,9 @@ snippet fig "Figure"
 \end{figure}$0
 endsnippet
 
-
+snippet ... "ldots" iA
+\ldots
+endsnippet
 
 snippet mk "Math" wA
 $${1}$`!p
@@ -329,23 +331,23 @@ else:
 endsnippet
 
 context "math()"
-snippet '(\b|^|\\)(?!approx|sim|geq|leq|equiv)([A-Za-z]+)(\d)' "auto subscript" wrA
+snippet '(\b|^|\\|\d)(?!approx|sim|geq|leq|equiv|cdot|int|oint|iint|oiint|iiint|arr|pmat|vmat)([A-Za-z]+)(\d)' "auto subscript" wrA
 `!p snip.rv = match.group(1) + match.group(2) + "_" + match.group(3)`
 endsnippet
 
 context "math()"
-snippet '([A-Za-z])_((?:\d|[a-zA-Z])(?:,?)(?:\d|[A-Za-z]))' "auto subscript2" wrA
-`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+snippet '(\b|^|\\|\d)(?!approx|sim|geq|leq|equiv|cdot|int|oint|iint|oiint|iiint|arr|pmat|vmat)([A-Za-z]+)_((?:\d|[a-zA-Z])(?:,?)(?:\d|[A-Za-z]))' "auto subscript 2" wrA
+`!p snip.rv = match.group(1) + match.group(2)`_{`!p snip.rv = match.group(3)`}
 endsnippet
 
 context "math()"
-snippet '([A-Za-z])_([a-zA-z]+)_(\d|[A-Za-z])' "auto subscript3" wrA
-`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2) + '_' + match.group(3)`}
+snippet '(\b|^|\\|\d)(?!approx|sim|geq|leq|equiv|cdot|int|oint|iint|oiint|iiint|arr|pmat|vmat)([A-Za-z]+)_([a-zA-z]+)_(\d|[A-Za-z])' "auto subscript 3" wrA
+`!p snip.rv = match.group(1) + match.group(2)`_{`!p snip.rv = match.group(3) + '_' + match.group(4)`}
 endsnippet
 
 priority 10
 context "math()"
-snippet '(\d)e(\d)' "non-subscript siunitx" wrA
+snippet '\{(\d+)e(\d)' "non-subscript siunitx" wrA
 `!p snip.rv = match.group(1) + "e" + match.group(2)`
 endsnippet
 
@@ -380,6 +382,16 @@ endsnippet
 context "math()"
 snippet '(?<!\\)tens' "Tens" rAi
 \tens{$1}$0
+endsnippet
+
+context "math()"
+snippet >= "geq" iA
+\geq
+endsnippet
+
+context "math()"
+snippet <= "leq" iA
+\leq
 endsnippet
 
 context "math()"
@@ -547,22 +559,6 @@ snippet '(?<!\\)inf' "Oneindig" rAi
 \infty
 endsnippet
 
-# context "math()"
-# snippet Rsun "Zonnestraal" Ai
-# R_\odot
-# endsnippet
-
-# context "math()"
-# snippet Msun "Zonnen massa" Ai
-# M_\odot
-# endsnippet
-
-# context "math()"
-# snippet Lsun "Zonnen luminosity" Ai
-# L_\odot
-# endsnippet
-# vim:ft=snippets
-
 context "math()"
 snippet '(?<!\\)pmat' "P matrix" ri
 \begin{pmatrix}
@@ -630,7 +626,7 @@ snip.rv = create_matrix(match.group(1), match.group(2), "&", "\t", "\\\\\\\\\n")
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
-snippet '([ \t]*)(?<!\\)(\\\[|)(?<!\\)(pmat|vmat)_(\d+),(\d+)' "P matrix" r
+snippet '([ \t]*)(?<!\\)(\\\[|)(?<!\\)(pmat|vmat)(\d+),(\d+)' "P matrix" r
 `!p snip.rv = match.group(1) + match.group(2)`\begin{`!p snip.rv = match.group(3)`rix}
 `!p
 snip.rv = create_math_matrix(match.group(4), match.group(5), "&", match.group(1), "\\\\\\\\\n", match.group(3)+'rix')
@@ -638,7 +634,7 @@ snip.rv = create_math_matrix(match.group(4), match.group(5), "&", match.group(1)
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
-snippet 'arr_(\d+),(\d+)' "array" r
+snippet 'arr(\d+),(\d+)' "array" r
 \begin{array}{`!p
 orient = ""
 for _ in range(0, int(match.group(1))-1): orient += "c|"
