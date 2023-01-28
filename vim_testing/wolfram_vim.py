@@ -9,7 +9,7 @@ import re
 FUNCTIONS = ['ln', 'log_', 'log', 'exp', 'sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh',
              'arcsin', 'arccos', 'arctan', 'left', 'right', 'sqrt', 'frac', 'sum']
 
-CONSTANTS = ['pi']
+CONSTANTS = ['pi', 'hbar']
 
 EULER_CHAR = 'e'
 IMAGINARY_CHAR = 'i'
@@ -63,6 +63,7 @@ def substring_symbol(substring):
     """
     print(substring)
 
+
     keys, symbols = [], []
     if '_' in substring:
         pass
@@ -107,7 +108,7 @@ def create_symbols(latex_string):
     """
 
     # Remove the functions and constants from the string
-    if any(func in latex_string for func in FUNCTIONS):
+    if any(func in latex_string for func in FUNCTIONS) or any(const in latex_string for const in CONSTANTS):
         latex_string = remove_nonvariables(latex_string)
 
     symbol_dict = {}

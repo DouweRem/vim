@@ -229,7 +229,7 @@ snippet template "Basic LaTeX template" b
 \usepackage{textcomp}
 \usepackage[english]{babel}
 \usepackage{amsmath, amssymb}
-\usepackage{siunitx}
+\usepackage[separate-uncertainty=true]{siunitx}
 \usepackage{gensymb}
 \usepackage{graphicx}
 
@@ -649,7 +649,7 @@ snippet '(?<!\\)(qty|SI)' "siunitx" rw
 \\`!p snip.rv = match.group(1)`{$1}{$2}$0
 endsnippet
 
-snippet '(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|parsec|erg|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
+snippet '(\\qty|\\SI){([^\n\}$]+)}{([^\n\}$]*)(?<!\\)(nano|micro|milli|centi|kilo|mega|giga|tera|watt|joule|second|gram|metre|radian|steradian|kelvin|hertz|eV|parsec|erg|Msun|Rsun|Lsun|per|squared|cubed)' "units in siunitx" rwA
 `!p snip.rv = match.group(1) + "{" + match.group(2) + "}{" + match.group(3) + "\\" + match.group(4)`$0
 endsnippet
 
